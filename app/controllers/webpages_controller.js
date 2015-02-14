@@ -1,9 +1,16 @@
-var request = require('request');
 var cheerio = require('cheerio');
+var Q = require('q');
+var Request = require('../models/request');
+var Webpage = require('../models/webpage');
 
 var webpagesController = {
   index: function(req, res, next) {
-    res.render('webpages/index');
+    Webpage.findAll()
+    .then(function(webpages) {
+      res.render('webpages/index', { webpages: webpages });
+    }, function(err) {
+
+    });
   },
 
   new: function(req, res, next) {
@@ -12,16 +19,32 @@ var webpagesController = {
 
   create: function(req, res) {
     var url = req.body.url;
+    var request = new Request();
+    var webpage;
 
-    // Use http://www.medicine.utoronto.ca/ for now
-    // TODO: need to validate url
-    request(url, function(err, response, body) {
-      if (!err && response.statusCode === 200) {
-        $ = cheerio.load(body);
+    request.get(url)
+    .then(function(body) {
+      return body;
 
-        // TODO: dynamic selector
-        console.log($('#block-block-1').text());
-      }
+      // $ = cheerio.load(body);
+      // console.log($('#block-block-1').text());
+    }, function(err) {
+      // TODO: handle err
+    })
+    .then(function(body) {
+      webpage = new Webpage();
+
+      return webpage.insert({
+        body: body,
+        url: url
+      });
+    }, function(err) {
+      // TODO: handle err
+    })
+    .then(function(webpage) {
+      req.flash('success', 'Added a new webpage.');
+      return res.redirect('/webpages');
+    }, function(err) {
     });
   }
 };
