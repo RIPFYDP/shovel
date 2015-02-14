@@ -9,5 +9,6 @@ routes.get('/*', applicationController.index);
 routes.get('/', controlPanelController.index);
 routes.get('/webpages', webpagesController.index);
 routes.get('/webpages/new', webpagesController.new);
+routes.post('/webpages/create', webpagesController.create);
 
 module.exports = routes;

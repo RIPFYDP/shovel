@@ -28,14 +28,14 @@ var development = {
     app.use('/bower_components',  express.static(__dirname + '/../../bower_components'));
     app.use(compass());
 
-    app.use('/', routes);
-
     // uncomment after placing your favicon in /public
     // app.use(favicon(__dirname + '/public/favicon.ico'));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+
+    app.use('/', routes);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {

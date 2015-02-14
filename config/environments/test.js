@@ -28,11 +28,11 @@ var test = {
     app.use('/bower_components',  express.static(__dirname + '../../bower_components'));
     app.use(compass());
 
-    app.use('/', routes);
-
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+
+    app.use('/', routes);
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
