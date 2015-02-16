@@ -14,8 +14,6 @@ var assert = require('assert');
 var app = require('./app');
 
 gulp.task('test-once', function() {
-  process.env.NODE_ENV = 'test';
-
   return gulp.src('test/**/**/*.js', {read: false})
              .pipe(mocha({reporter: 'nyan'}))
              .pipe(exit());
