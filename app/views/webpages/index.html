@@ -13,11 +13,34 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    {% for webpage in webpages %}
-      <p>
-        {{ webpage.url }}
-      </p>
-    {% endfor %}
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Entities</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for webpage in webpages %}
+          <tr>
+            <td>{{ { string: webpage.url, at: 50 }|truncate }}</td>
+            <td></td>
+            <td>
+              <p><a class="btn btn-default" href="/webpages/{{ webpage._id.toString() }}/edit">Edit</a></p>
+              <p>
+                <form action="/webpages/destroy" method="POST">
+                  <input type="hidden" value="{{ webpage._id.toString() }}" name="webpage_id">
+                  <button type="submit" class="btn btn-default">Delete</button>
+                </form>
+              </p>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
   </div>
 </div>
 {% endblock %}

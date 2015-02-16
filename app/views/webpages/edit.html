@@ -1,0 +1,19 @@
+{% extends '../layouts/application.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h1>Edit webpage</h1>
+    <form action="/webpages/update" method="POST">
+      <input type="hidden" class="form-control" id="url" name="id" value="{{ webpage._id.toString() }}">
+      <div class="form-group">
+        <label for="url">Url</label>
+        <input type="text" class="form-control" id="url" name="url" value="{{ webpage.url }}">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

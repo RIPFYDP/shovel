@@ -1,5 +1,6 @@
 var cheerio = require('cheerio');
 var Q = require('q');
+var S = require('string');
 var Request = require('../models/request');
 var Webpage = require('../models/webpage');
 
@@ -45,6 +46,61 @@ var webpagesController = {
       req.flash('success', 'Added a new webpage.');
       return res.redirect('/webpages');
     }, function(err) {
+    });
+  },
+
+  edit: function(req, res, next) {
+    var id = req.params.id;
+
+    Webpage.findOneQ({_id: id})
+    .then(function(webpage) {
+      return res.render('webpages/edit', {webpage: webpage});
+    }, function(err) {
+      req.flash('danger', 'Sorry, we couldn\'t find the webpage.');
+      return res.redirect('/webpages');
+    });
+  },
+
+  update: function(req, res) {
+    var request = new Request();
+
+    request.get(req.body.url)
+    .then(function(body) {
+      return body;
+    }, function(err) {
+      // TODO: handle err
+    })
+    .then(function(body) {
+      var data = {
+        url: req.body.url,
+        body: body
+      };
+
+      return Webpage.findOneAndUpdateQ({ _id: req.body.id }, data);
+    }, function(err) {
+      // TODO: handle err
+    })
+    .then(function(webpage) {
+      req.flash('success', 'Updated the webpage.');
+      return res.redirect('/webpages');
+    }, function(err) {
+      req.flash('danger', 'Sorry, we could\'t update the webpage.');
+      return res.redirect('/webpages/' + req.body.id + '/edit');
+    });
+
+
+  },
+
+  destroy: function(req, res) {
+    var id = req.body.webpage_id;
+
+    Webpage.findOneAndRemoveQ({_id: id})
+    .then(function(webpage) {
+      req.flash('success', 'Deleted the webpage');
+      return res.redirect('/webpages');
+    }, function(err) {
+      req.flash('danger', 'Sorry, we couldn\'t delete the webpage');
+      return res.redirect('/webpages');
     });
   }
 };

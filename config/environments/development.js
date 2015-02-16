@@ -10,6 +10,7 @@ var session = require('express-session');
 var flash = require('flash');
 
 var routes = require('../routes');
+var swigHelpers = require('../helpers/swig_helpers');
 
 var development = {
   database: {
@@ -24,7 +25,7 @@ var development = {
     app.set('views', path.join(__dirname, '../../app/views'));
     app.engine('html', swig.renderFile);
     app.set('view engine', 'html');
-    swig.setDefaults({ cache: false });
+    swigHelpers.setup(swig);
 
     app.use(express.static(path.join(__dirname, '../../public')));
     app.use('/bower_components',  express.static(__dirname + '/../../bower_components'));
