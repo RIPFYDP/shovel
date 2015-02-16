@@ -20,7 +20,7 @@ describe('/webpages/new', function() {
     nightmare = new Nightmare();
   });
 
-  it('title', function(done) {
+  it('create a new webpage', function(done) {
     nightmare.goto('http://localhost:3001/webpages/new')
     .type('input[name="url"]', 'https://www.google.com/')
     .click('button.btn.btn-default')
