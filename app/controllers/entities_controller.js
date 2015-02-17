@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 var Q = require('q');
 var Entity = require('../models/entity');
-var Website = require('../models/website');
+var Webpage = require('../models/webpage');
 
 var entitiesController = {
   index: function(req, res, next) {
@@ -10,7 +10,14 @@ var entitiesController = {
   new: function(req, res, next) {
     var options = {};
 
-    res.render('entities/new', options);
+    Webpage.findAllQ()
+    .then(function(webpages) {
+      options.webpages = webpages;
+      res.render('entities/new', options);
+    }, function(err) {
+      req.flash('danger', 'We couldn\'t find webpages.');
+      return res.redirect('/entities');
+    });
   }
 };
 
