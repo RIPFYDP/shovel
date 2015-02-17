@@ -10,7 +10,7 @@ var webpageSchema = new Schema({
 
 var Webpage = mongoose.model('Webpage', webpageSchema);
 
-Webpage.findAll = function() {
+Webpage.findAllQ = function() {
   var deferred = Q.defer();
 
   Webpage.find({}, function(err, result) {

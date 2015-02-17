@@ -1,4 +1,3 @@
-var cheerio = require('cheerio');
 var Q = require('q');
 var S = require('string');
 var Request = require('../models/request');
@@ -6,7 +5,7 @@ var Webpage = require('../models/webpage');
 
 var webpagesController = {
   index: function(req, res, next) {
-    Webpage.findAll()
+    Webpage.findAllQ()
     .then(function(webpages) {
       res.render('webpages/index', { webpages: webpages });
     }, function(err) {
