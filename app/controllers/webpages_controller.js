@@ -32,9 +32,7 @@ var webpagesController = {
       // TODO: handle err
     })
     .then(function(body) {
-      webpage = new Webpage();
-
-      return webpage.insert({
+      return Webpage.insertOneQ({
         body: body,
         url: url
       });

@@ -1,0 +1,46 @@
+{% extends '../layouts/application.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-10">
+    <h1>Entities</h1>
+  </div>
+  <div class="col-md-2">
+    <a class="btn btn-default" href="/entities/new" role="button">New entity</a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Selector</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entity in entities %}
+          <tr>
+            <td></td>
+            <td>{{ entity.selector }}</td>
+            <td>
+              <p><a class="btn btn-default" href="/entities/{{ entity._id.toString() }}/edit">Edit</a></p>
+              <p>
+                <form action="/entities/destroy" method="POST">
+                  <input type="hidden" value="{{ entity._id.toString() }}" name="entity_id">
+                  <button type="submit" class="btn btn-default">Delete</button>
+                </form>
+              </p>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{% endblock %}

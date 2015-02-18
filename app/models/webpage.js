@@ -62,7 +62,7 @@ Webpage.findOneAndUpdateQ = function(condition, data) {
   return deferred.promise;
 };
 
-Webpage.prototype.insert = function(data) {
+Webpage.insertOneQ = function(data) {
   var deferred = Q.defer();
 
   Webpage.create(data, function(err, result) {

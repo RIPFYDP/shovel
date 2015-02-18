@@ -9,7 +9,7 @@
     <form action="/entities/create" method="POST">
       <div class="form-group">
         <label for="url">URL</label>
-        <select class="form-control">
+        <select class="form-control" name="webpage_id">
           {% for webpage in webpages %}
             <option value="{{ webpage._id.toString() }}">{{ webpage.url }}</option>
           {% endfor %}

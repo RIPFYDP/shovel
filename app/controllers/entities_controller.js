@@ -5,18 +5,35 @@ var Webpage = require('../models/webpage');
 
 var entitiesController = {
   index: function(req, res, next) {
+    Entity.findAllQ()
+    .then(function(entities) {
+      res.render('entities/index', {entities: entities});
+    }, function(err) {
+    });
   },
 
   new: function(req, res, next) {
-    var options = {};
-
     Webpage.findAllQ()
     .then(function(webpages) {
-      options.webpages = webpages;
+      var options = { webpages: webpages };
       res.render('entities/new', options);
     }, function(err) {
       req.flash('danger', 'We couldn\'t find webpages.');
       return res.redirect('/entities');
+    });
+  },
+
+  create: function(req, res) {
+    Entity.insertOneAndGetValueQ({
+      website_id: req.body.webpage_id,
+      selector: req.body.selector
+    })
+    .then(function(webpage) {
+      req.flash('success', 'Saved the entity');
+      return res.redirect('/entities');
+    }, function(err) {
+      req.flash('danger', 'We couldn\'t save the entity');
+      return res.redirect('/entities/new');
     });
   }
 };
