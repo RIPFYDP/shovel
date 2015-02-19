@@ -5,7 +5,7 @@ var Webpage = require('../models/webpage');
 
 var entitiesController = {
   index: function(req, res, next) {
-    Entity.findAllQ()
+    Entity.findAllPopulateQ()
     .then(function(entities) {
       res.render('entities/index', {entities: entities});
     }, function(err) {
