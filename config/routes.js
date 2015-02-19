@@ -21,6 +21,7 @@ routes.get('/entities', entitiesController.index);
 routes.get('/entities/new', entitiesController.new);
 routes.get('/entities/:id/edit', entitiesController.edit);
 routes.post('/entities/create', entitiesController.create);
+routes.post('/entities/:id/update', entitiesController.update);
 routes.post('/entities/destroy', entitiesController.destroy);
 
 module.exports = routes;

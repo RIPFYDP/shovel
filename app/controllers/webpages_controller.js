@@ -72,7 +72,6 @@ var webpagesController = {
         url: req.body.url,
         body: body
       };
-
       return Webpage.findOneAndUpdateQ({ _id: req.body.id }, data);
     }, function(err) {
       // TODO: handle err

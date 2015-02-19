@@ -57,6 +57,16 @@ var entitiesController = {
     });
   },
 
+  update: function(req, res) {
+    Entity.findOneAndUpdateWithValueQ({ _id: req.params.id }, req.body)
+    .then(function(entity) {
+      res.redirect('/entities');
+    }, function(err) {
+      req.flash('danger', 'We couldn\'t find the entity');
+      res.redirect('/entities/' + req.params.id + '/edit');
+    });
+  },
+
   destroy: function(req, res) {
     var id = req.body.entity_id;
 

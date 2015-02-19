@@ -6,13 +6,15 @@
 <div class="row">
   <div class="col-md-12">
     <h1>Edit entity</h1>
-    <form action="/entities/update" method="POST">
+    <form action="/entities/{{ entity._id.toString() }}/update" method="POST">
       <div class="form-group">
         <label for="url">URL</label>
         <select class="form-control" name="webpage_id">
           {% for webpage in webpages %}
             {% if webpage._id.toString() === entity._webpage._id.toString() %}
-              <option value="{{ webpage._id.toString() }}" selected="selected">{{ webpage.url }}</option>
+              <option value="{{ webpage._id.toString() }}" selected="selected">
+                {{ webpage.url }}
+              </option>
             {% else %}
               <option value="{{ webpage._id.toString() }}">{{ webpage.url }}</option>
             {% endif %}

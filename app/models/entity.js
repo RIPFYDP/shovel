@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 var Q = require('q');
 var cheerio = require('cheerio');
 var Webpage = require('./webpage');
+var Request = require('./request');
 
 var entitySchema = new Schema({
   date: { type: Date, default: Date.now },
@@ -110,6 +111,40 @@ Entity.findOneAndRemoveQ = function(data) {
       return deferred.reject(err);
     }
     deferred.resolve(result);
+  });
+
+  return deferred.promise;
+};
+
+Entity.findOneAndUpdateQ = function(condition, data) {
+  var deferred = Q.defer();
+
+  Entity.findOneAndUpdate(condition, data, function(err, result) {
+    if (err) {
+      return deferred.reject(err);
+    }
+    deferred.resolve(result);
+  });
+
+  return deferred.promise;
+};
+
+Entity.findOneAndUpdateWithValueQ = function(condition, data) {
+  var deferred = Q.defer();
+  var request = new Request();
+
+  Webpage.findOneQ({ _id: data.webpage_id })
+  .then(function(webpage) {
+    var $ = cheerio.load(webpage.body);
+    data.value = $(data.selector).text();
+    return Entity.findOneAndUpdateQ(condition, data);
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(entity) {
+    deferred.resolve(entity);
+  }, function(err) {
+    deferred.reject(err);
   });
 
   return deferred.promise;

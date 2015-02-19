@@ -1,5 +1,6 @@
 var Q = require('q');
 var request = require('request');
+var _ = require('lodash');
 var Request = function() {};
 
 Request.prototype.get = function(url) {
@@ -7,7 +8,7 @@ Request.prototype.get = function(url) {
 
   request(url, function(err, response, body) {
     if (err) {
-      deferred.reject(err);
+      return deferred.reject(err);
     }
 
     if (!err && response.statusCode === 200) {
