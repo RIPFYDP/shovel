@@ -35,12 +35,11 @@ Entity.findAllPopulateQ = function() {
     if (err) {
       return deferred.reject(err);
     }
-    console.log(result);
     deferred.resolve(result);
   });
 
   return deferred.promise;
-}
+};
 
 Entity.insertOneQ = function(data) {
   var deferred = Q.defer();
@@ -81,7 +80,7 @@ Entity.findOnePopulateQ = function(data) {
   });
 
   return deferred.promise;
-}
+};
 
 Entity.insertOneAndGetValueQ = function(data) {
   var deferred = Q.defer();
@@ -98,6 +97,19 @@ Entity.insertOneAndGetValueQ = function(data) {
     deferred.resolve(entity);
   }, function(err) {
     deferred.reject(err);
+  });
+
+  return deferred.promise;
+};
+
+Entity.findOneAndRemoveQ = function(data) {
+  var deferred = Q.defer();
+
+  Entity.findOneAndRemove(data, function(err, result) {
+    if (err) {
+      return deferred.reject(err);
+    }
+    deferred.resolve(result);
   });
 
   return deferred.promise;

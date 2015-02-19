@@ -35,6 +35,19 @@ var entitiesController = {
       req.flash('danger', 'We couldn\'t save the entity');
       return res.redirect('/entities/new');
     });
+  },
+
+  destroy: function(req, res) {
+    var id = req.body.entity_id;
+
+    Entity.findOneAndRemoveQ({_id: id})
+    .then(function(webpage) {
+      req.flash('success', 'Deleted the entity');
+      return res.redirect('/entities');
+    }, function(err) {
+      req.flash('danger', 'Sorry, we couldn\'t delete the entity');
+      return res.redirect('/entities');
+    });
   }
 };
 

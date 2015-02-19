@@ -20,5 +20,6 @@ routes.post('/webpages/destroy', webpagesController.destroy);
 routes.get('/entities', entitiesController.index);
 routes.get('/entities/new', entitiesController.new);
 routes.post('/entities/create', entitiesController.create);
+routes.post('/entities/destroy', entitiesController.destroy);
 
 module.exports = routes;
