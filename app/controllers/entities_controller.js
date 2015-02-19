@@ -37,6 +37,26 @@ var entitiesController = {
     });
   },
 
+  edit: function(req, res) {
+    var data = {};
+
+    Webpage.findAllQ()
+    .then(function(webpages) {
+      data.webpages = webpages;
+      return Entity.findOnePopulateQ({ _id: req.params.id });
+    }, function(err) {
+      req.flash('danger', 'We couldn\'t find webpages.');
+      return res.redirect('/entities');
+    })
+    .then(function(entity) {
+      data.entity = entity;
+      return res.render('entities/edit', data);
+    }, function(err) {
+      req.flash('danger', 'Sorry, we couldn\'t find the entity.');
+      return res.redirect('/entities');
+    });
+  },
+
   destroy: function(req, res) {
     var id = req.body.entity_id;
 

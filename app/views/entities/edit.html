@@ -1,0 +1,30 @@
+{% extends '../layouts/application.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <h1>Edit entity</h1>
+    <form action="/entities/update" method="POST">
+      <div class="form-group">
+        <label for="url">URL</label>
+        <select class="form-control" name="webpage_id">
+          {% for webpage in webpages %}
+            {% if webpage._id.toString() === entity._webpage._id.toString() %}
+              <option value="{{ webpage._id.toString() }}" selected="selected">{{ webpage.url }}</option>
+            {% else %}
+              <option value="{{ webpage._id.toString() }}">{{ webpage.url }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="selector">Selector</label>
+        <input type="text" class="form-control" id="selector" name="selector" value="{{ entity.selector }}">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
