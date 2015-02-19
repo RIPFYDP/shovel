@@ -5,7 +5,8 @@ var Q = require('q');
 var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
   url: String,
-  body: String
+  body: String,
+  entities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Entity' }]
 });
 
 var Webpage = mongoose.model('Webpage', webpageSchema);

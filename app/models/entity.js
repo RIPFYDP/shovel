@@ -8,7 +8,7 @@ var entitySchema = new Schema({
   date: { type: Date, default: Date.now },
   selector: String,
   value: String,
-  webpage_id: String
+  _webpage: { type: String, ref: 'Webpage' }
 });
 
 var Entity = mongoose.model('Entity', entitySchema);
@@ -41,7 +41,7 @@ Entity.insertOneQ = function(data) {
 
 Entity.findOneQ = function(data) {
   var deferred = Q.defer();
-  console.log(data);
+
   Entity.findOne(data, function(err, result) {
     if (err) {
       return deferred.reject(err);
@@ -55,7 +55,7 @@ Entity.findOneQ = function(data) {
 Entity.insertOneAndGetValueQ = function(data) {
   var deferred = Q.defer();
 
-  Webpage.findOneQ({ id: data.webpage_id })
+  Webpage.findOneQ({ _id: data._webpage })
   .then(function(webpage) {
     var $ = cheerio.load(webpage.body);
     data.value = $(data.selector).text();

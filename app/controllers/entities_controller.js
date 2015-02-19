@@ -25,7 +25,7 @@ var entitiesController = {
 
   create: function(req, res) {
     Entity.insertOneAndGetValueQ({
-      website_id: req.body.webpage_id,
+      _webpage: req.body.webpage_id,
       selector: req.body.selector
     })
     .then(function(webpage) {
