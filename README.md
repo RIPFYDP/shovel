@@ -23,3 +23,5 @@ Run test
 - `package.json`
 - `config/environments/development.js`
 - `config/environments/test.js`
+
+## Useful links
