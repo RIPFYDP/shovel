@@ -4,10 +4,11 @@ var expect = chai.expect;
 var app = require('../../../../app');
 
 describe('/webpages/new', function() {
-  this.timeout(100000);
+  this.timeout(50000);
 
   before(function(done) {
-    server = app.listen(3001);
+    app.main('test');
+    server = app.express.listen(3001);
     done();
   });
 

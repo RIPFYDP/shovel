@@ -29,7 +29,7 @@ var entitiesController = {
       selector: req.body.selector
     })
     .then(function(webpage) {
-      req.flash('success', 'Saved the entity');
+      req.flash('success', 'Saved the entity.');
       return res.redirect('/entities');
     }, function(err) {
       req.flash('danger', 'We couldn\'t save the entity');

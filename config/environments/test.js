@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 var favicon = require('serve-favicon');
 var swig = require('swig');
 var compass = require('node-compass');
+var session = require('express-session');
+var flash = require('flash');
 
 var routes = require('../routes');
 var swigHelpers = require('../helpers/swig_helpers');
@@ -29,9 +31,18 @@ var test = {
     app.use('/bower_components',  express.static(__dirname + '../../bower_components'));
     app.use(compass());
 
+    // uncomment after placing your favicon in /public
+    // app.use(favicon(__dirname + '/public/favicon.ico'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(cookieParser());
+
+    app.use(session({
+      resave: true,
+      saveUninitialized: true,
+      secret: process.env.SESSION_SECRET || 'Your Session Secret goes here'
+    }));
+    app.use(flash());
 
     app.use('/', routes);
 

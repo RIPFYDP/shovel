@@ -8,18 +8,21 @@ var app = require('../app');
 var debug = require('debug')('boxcutter:server');
 var http = require('http');
 
+// Set environment & connect to mongoDB.
+app.main('development');
+
 /**
  * Get port from environment and store in Express.
  */
 
 var port = parseInt(process.env.PORT, 10) || 3000;
-app.set('port', port);
+app.express.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(app.express);
 
 /**
  * Listen on provided port, on all network interfaces.

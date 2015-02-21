@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Q = require('q');
+var Random = require('random-js');
 
 var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
@@ -19,6 +20,41 @@ Webpage.findAllQ = function() {
       return deferred.reject(err);
     }
     deferred.resolve(result);
+  });
+
+  return deferred.promise;
+};
+
+Webpage.countQ = function() {
+  deferred = Q.defer();
+
+  Webpage.count(function(err, count) {
+    if (err) {
+      return deferred.reject(err);
+    }
+
+    return deferred.resolve(count);
+  });
+
+  return deferred.promise;
+};
+
+Webpage.pickOneQ = function() {
+  var deferred = Q.defer();
+  var webpagesCount;
+
+  Webpage.countQ()
+  .then(function(count) {
+    webpagesCount = count;
+    return Webpage.findAllQ();
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(webpages) {
+    var randomInt = Random.integer(0, webpagesCount - 1);
+    deferred.resolve(webpages[randomInt]);
+  }, function(err) {
+    deferred.reject(err);
   });
 
   return deferred.promise;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "gulp server",
-    "test": "node `which gulp` test-once"
+    "test": "node `which gulp` test-complete"
   },
   "dependencies": {
     "body-parser": "~1.10.1",
@@ -37,6 +37,8 @@
     "mocha": "^2.1.0",
     "mongodb": "^1.4.30",
     "nightmare": "^1.7.0",
-    "phantomjs": "^1.9.15"
+    "phantomjs": "^1.9.15",
+    "random-js": "^1.0.4",
+    "run-sequence": "^1.0.2"
   }
 }
