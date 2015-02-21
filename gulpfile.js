@@ -6,19 +6,13 @@ var stylish = require('jshint-stylish');
 var nodemon = require('gulp-nodemon');
 var _ = require('lodash');
 var faker = require('faker');
-var runSequence = require('run-sequence');
 var Mongo = require('mongodb').MongoClient;
 var development = require('./config/environments/development');
 var test = require('./config/environments/test');
 var assert = require('assert');
+var Q = require('q');
 
 var app = require('./app');
-
-gulp.task('test-once', function() {
-  return gulp.src('test/**/**/*.js', {read: false})
-             .pipe(mocha({reporter: 'nyan'}))
-             .pipe(exit());
-});
 
 gulp.task('lint', function() {
   var source = ['./app.js', './config/**/*.js', './test/**/*', 'app/**/*.js'];
@@ -81,6 +75,8 @@ gulp.task('db:seed', function() {
 });
 
 gulp.task('db:test:drop', function() {
+  var deferred = Q.defer();
+
   Mongo.connect(test.database.fullUrl, function(err, db) {
     assert.equal(null, err);
 
@@ -91,12 +87,16 @@ gulp.task('db:test:drop', function() {
       setTimeout(function() {
 
         db.close();
+        deferred.resolve(result);
       }, 2000);
     });
   });
+
+  return deferred.promise;
 });
 
-gulp.task('db:test:seed', function() {
+gulp.task('db:test:seed', ['db:test:drop'], function() {
+  var deferred = Q.defer();
   var webpages = [];
 
   _.times(100, function() {
@@ -117,12 +117,20 @@ gulp.task('db:test:seed', function() {
         assert.equal(null, err);
 
         db.close();
+        deferred.resolve(result);
       })
     });
   });
+
+  return deferred.promise;
 });
 
-gulp.task('test-complete', function(callback) {
+gulp.task('test-once', ['db:test:seed'], function() {
   process.env.NODE_ENV = 'test';
-  runSequence('db:test:drop', 'db:test:seed', 'test-once', callback);
+
+  return gulp.src('test/**/**/*.js', {read: false})
+             .pipe(mocha({reporter: 'nyan'}))
+             .pipe(exit());
 });
+
+gulp.task('test-complete', ['db:test:drop', 'db:test:seed', 'test-once']);

@@ -24,25 +24,16 @@ describe('/entities/new', function() {
   });
 
   it('create a new entity', function(done) {
-    Webpage.pickOneQ()
-    .then(function(webpage) {
-      nightmare.goto('http://localhost:3001/entities/new')
-      .type('input[name="selector"]', 'h1')
-      .click('button.btn.btn-default')
-      .wait('.alert-message')
-      .evaluate(function() {
-        return document.querySelector('.alert-message').innerText.trim();
-      }, function(text) {
-        expect(text).to.equal('Saved the entity.');
-      })
-      .run(done);
-    }, function(err) {
-      expect(err).to.equal(null);
-      done();
-    });
-    // TODO: need to add
-    // .select('select[name="webpage_id"]', webpage._id.toString())
-
-
+    nightmare.goto('http://localhost:3001/entities/new')
+    .select('select[name="webpage_id"]', '1')
+    .type('input[name="selector"]', 'h1')
+    .click('button.btn.btn-default')
+    .wait('.alert-message')
+    .evaluate(function() {
+      return document.querySelector('.alert-message').innerText.trim();
+    }, function(text) {
+      expect(text).to.equal('Saved the entity.');
+    })
+    .run(done);
   });
 });

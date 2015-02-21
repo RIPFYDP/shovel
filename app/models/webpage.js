@@ -32,7 +32,6 @@ Webpage.countQ = function() {
     if (err) {
       return deferred.reject(err);
     }
-
     return deferred.resolve(count);
   });
 
