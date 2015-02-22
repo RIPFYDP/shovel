@@ -24,20 +24,13 @@ var webpagesController = {
 
     request.get(url)
     .then(function(body) {
-      return body;
-
-      // $ = cheerio.load(body);
-      // console.log($('#block-block-1').text());
-    }, function(err) {
-      // TODO: handle err
-    })
-    .then(function(body) {
       return Webpage.insertOneQ({
         body: body,
         url: url
       });
     }, function(err) {
-      // TODO: handle err
+      req.flash('danger', err.message);
+      return res.redirect('/webpages/new');
     })
     .then(function(webpage) {
       req.flash('success', 'Added a new webpage.');

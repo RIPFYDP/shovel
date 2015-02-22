@@ -8,7 +8,7 @@ Request.prototype.get = function(url) {
 
   request(url, function(err, response, body) {
     if (err) {
-      return deferred.reject(err);
+      return deferred.reject(new Error('Sorry, URL is invalid'));
     }
 
     if (!err && response.statusCode === 200) {

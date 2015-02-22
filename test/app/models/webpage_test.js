@@ -74,7 +74,7 @@ describe('webpage model', function() {
   });
 
   it('.findOneAndRemoveQ', function(done) {
-    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/' };
+    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/', body: 'yes' };
 
     Webpage.insertOneQ(wp)
     .then(function(webpage) {
@@ -93,7 +93,7 @@ describe('webpage model', function() {
   });
 
   it('.findOneAndUpdateQ', function(done) {
-    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/' };
+    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/', body: 'yes' };
     var newUrl = 'http://chaijs.com/api/bdd/';
 
     Webpage.insertOneQ(wp)
@@ -114,7 +114,7 @@ describe('webpage model', function() {
   });
 
   it('.insertOneQ', function(done) {
-    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/' };
+    var wp = { url: 'https://www.reddit.com/r/leagueoflegends/', body: 'yes' };
 
     Webpage.insertOneQ(wp)
     .then(function(webpage) {

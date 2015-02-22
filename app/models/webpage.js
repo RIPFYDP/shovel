@@ -1,13 +1,24 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Q = require('q');
+var validator = require('validator');
 var Random = require('random-js');
 var rEngine = Random.engines.nativeMath;
 
+var validators = {
+  isURL: function(val) {
+    return validator.isURL(val);
+  }
+};
+
+var toValidate = {
+  url: [validators.isURL, 'Please use a valid URL.']
+};
+
 var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
-  url: String,
-  body: String,
+  url: { type: String, required: true, validate: toValidate.url },
+  body: { type: String, required: true },
   entities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Entity' }]
 });
 
