@@ -11,6 +11,8 @@ var development = require('./config/environments/development');
 var test = require('./config/environments/test');
 var assert = require('assert');
 var Q = require('q');
+var Random = require('random-js');
+var rEngine = Random.engines.nativeMath;
 
 var app = require('./app');
 
@@ -98,12 +100,18 @@ gulp.task('db:test:drop', function() {
 gulp.task('db:test:seed', ['db:test:drop'], function() {
   var deferred = Q.defer();
   var webpages = [];
+  var entities = [];
 
   _.times(100, function() {
     webpages.push({
       body: faker.lorem.paragraph(),
       url: faker.internet.ip(),
       date: faker.date.recent()
+    });
+
+    entities.push({
+      selector: '#main',
+      value: '<html></html>'
     });
   });
 
@@ -116,8 +124,20 @@ gulp.task('db:test:seed', ['db:test:drop'], function() {
       collection.insert(webpages, function(err, result) {
         assert.equal(null, err);
 
-        db.close();
-        deferred.resolve(result);
+        db.createCollection('entities', {}, function(err, entitiesCollection) {
+          assert.equal(null, err);
+
+          _.each(entities, function(entity) {
+            var randomInt = Random.integer(0, 100 - 1)(rEngine);
+            entity._webpage = result[randomInt]._id.toString();
+          });
+
+          entitiesCollection.insert(entities, function(err, resultEntities) {
+            assert.equal(null, err);
+            deferred.resolve(result);
+            db.close();
+          });
+        });
       })
     });
   });
