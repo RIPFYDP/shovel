@@ -16,6 +16,7 @@ routes.get('/webpages/:id/edit', webpagesController.edit);
 routes.post('/webpages/create', webpagesController.create);
 routes.post('/webpages/update', webpagesController.update);
 routes.post('/webpages/destroy', webpagesController.destroy);
+routes.post('/webpages/reget', webpagesController.reget);
 
 routes.get('/entities', entitiesController.index);
 routes.get('/entities/new', entitiesController.new);

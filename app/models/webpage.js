@@ -124,4 +124,17 @@ Webpage.insertOneQ = function(data) {
   return deferred.promise;
 };
 
+Webpage.reget = function(condition) {
+  var deferred = Q.defer();
+
+  Webpage.findOneAndUpdateQ(condition, {})
+  .then(function(webpage) {
+    deferred.resolve(webpage);
+  }, function(err) {
+    deferred.reject(err);
+  });
+
+  return deferred.promise;
+};
+
 module.exports = Webpage;

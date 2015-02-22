@@ -35,6 +35,12 @@
                   <button type="submit" class="btn btn-default">Delete</button>
                 </form>
               </p>
+              <p>
+                <form action="/webpages/reget" method="POST">
+                  <input type="hidden" value="{{ webpage._id.toString() }}" name="webpage_id">
+                  <button type="submit" class="btn btn-default">Reget</button>
+                </form>
+              </p>
             </td>
           </tr>
         {% endfor %}

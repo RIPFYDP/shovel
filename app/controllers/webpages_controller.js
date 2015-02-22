@@ -91,6 +91,19 @@ var webpagesController = {
       req.flash('danger', 'Sorry, we couldn\'t delete the webpage');
       return res.redirect('/webpages');
     });
+  },
+
+  reget: function(req, res) {
+    var id = req.body.webpage_id;
+
+    Webpage.reget({ _id: id })
+    .then(function(webpage) {
+      req.flash('success', 'Reget html');
+      return res.redirect('/webpages');
+    }, function(err) {
+      req.flash('danger', 'Sorry, we coudn\'t reget the webpage');
+      return res.redirect('/webpages');
+    });
   }
 };
 

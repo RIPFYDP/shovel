@@ -125,4 +125,20 @@ describe('webpage model', function() {
       done();
     });
   });
+
+  it('.reget', function(done) {
+    var wp = {
+      url: 'https://plus.google.com/+AddyOsmani',
+      body: 'yes'
+    };
+
+    Webpage.insertOneQ(wp)
+    .then(function(webpage) {
+      expect(webpage).to.be.a('object');
+      done();
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    });
+  });
 });
