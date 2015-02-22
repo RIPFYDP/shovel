@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Q = require('q');
 var Random = require('random-js');
+var rEngine = Random.engines.nativeMath;
 
 var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
@@ -50,7 +51,8 @@ Webpage.pickOneQ = function() {
     deferred.reject(err);
   })
   .then(function(webpages) {
-    var randomInt = Random.integer(0, webpagesCount - 1);
+    var randomInt = Random.integer(0, webpagesCount - 1)(rEngine);
+
     deferred.resolve(webpages[randomInt]);
   }, function(err) {
     deferred.reject(err);
