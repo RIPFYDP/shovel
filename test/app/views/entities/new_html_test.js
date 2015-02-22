@@ -6,7 +6,7 @@ var app = require('../../../../app');
 var Webpage = require('../../../../app/models/webpage');
 
 describe('/entities/new', function() {
-  this.timeout(10000);
+  this.timeout(20000);
 
   before(function(done) {
     app.main('test');
