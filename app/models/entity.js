@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Q = require('q');
 var cheerio = require('cheerio');
+var _ = require('lodash');
 var Webpage = require('./webpage');
 var Request = require('./request');
 
@@ -68,10 +69,10 @@ Entity.findOneQ = function(data) {
   return deferred.promise;
 };
 
-Entity.findOnePopulateQ = function(data) {
+Entity.findOnePopulateQ = function(condition) {
   var deferred = Q.defer();
 
-  Entity.findOne(data)
+  Entity.findOne(condition)
   .populate('_webpage')
   .exec(function(err, result) {
     if (err) {
@@ -135,8 +136,13 @@ Entity.findOneAndUpdateWithValueQ = function(condition, data) {
 
   Webpage.findOneQ({ _id: data.webpage_id })
   .then(function(webpage) {
-    var $ = cheerio.load(webpage.body);
-    data.value = $(data.selector).text();
+    if (_.isEmpty(webpage.body)) {
+      data.value = '';
+    } else {
+      var $ = cheerio.load(webpage.body);
+      data.value = $(data.selector).text();
+    }
+
     return Entity.findOneAndUpdateQ(condition, data);
   }, function(err) {
     deferred.reject(err);

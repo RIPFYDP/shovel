@@ -58,7 +58,12 @@ var entitiesController = {
   },
 
   update: function(req, res) {
-    Entity.findOneAndUpdateWithValueQ({ _id: req.params.id }, req.body)
+    var data = {
+      selector: req.body.selector,
+      'webpage_id': req.body.webpage_id
+    };
+
+    Entity.findOneAndUpdateWithValueQ({ _id: req.params.id }, data)
     .then(function(entity) {
       res.redirect('/entities');
     }, function(err) {
