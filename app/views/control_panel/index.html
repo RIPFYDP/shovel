@@ -4,11 +4,29 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-md-10">
-    <h1>Webpages</h1>
+  <div class="col-md-12">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Webpages</td>
+          <td>{{ webpages.length }}</td>
+          <td><a class="btn btn-default" href="/webpages/new" role="button">New webpage</a></td>
+        </tr>
+        <tr>
+          <td>Entities</td>
+          <td>{{ entities.length }}</td>
+          <td><a class="btn btn-default" href="/entities/new" role="button">New entity</a></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="col-md-2">
-    <a class="btn btn-default" href="/webpages/new" role="button">New webpage</a>
-  </div>
+
 </div>
 {% endblock %}
