@@ -25,7 +25,7 @@
       <tbody>
         {% for entity in entities %}
           <tr>
-            <td>{{ entity._webpage.url }}</td>
+            <td>{{ { string: entity._webpage.url, at: 50 }|truncate }}</td>
             <td>{{ entity.selector }}</td>
             <td>
               <p><a class="btn btn-default" href="/entities/{{ entity._id.toString() }}/edit">Edit</a></p>
