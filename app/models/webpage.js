@@ -17,10 +17,11 @@ var toValidate = {
 
 var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
-  url: { type: String, required: true, validate: toValidate.url },
+  url: { type: String, required: true, validate: toValidate.url, unique: true },
   body: { type: String, required: true },
   entities: [{ type: Schema.Types.ObjectId, ref: 'Entity' }]
 });
+webpageSchema.path('url').index({ unique: true });
 
 var Webpage = mongoose.model('Webpage', webpageSchema);
 
