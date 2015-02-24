@@ -1,6 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var Q = require('q');
+var _ = require('lodash');
 var app = require('../../../app');
 
 var Webpage = require('../../../app/models/webpage');
@@ -135,6 +136,28 @@ describe('webpage model', function() {
     Webpage.insertOneQ(wp)
     .then(function(webpage) {
       expect(webpage).to.be.a('object');
+      done();
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    });
+  });
+
+  it('.findAllPopulateQ', function(done) {
+    Webpage.findAllPopulateQ()
+    .then(function(webpages) {
+      expect(webpages.length).to.not.equal(0);
+      expect(webpages).to.be.a('array');
+      expect(webpages[0]).to.be.a('object');
+
+      // Find a webpage that has some entities
+      var webpageWEntities = _.find(webpages, function(webpage) {
+        return webpage.entities.length > 0;
+      });
+
+      var entities = webpageWEntities.entities;
+      expect(entities).to.be.a('array');
+      expect(entities[0]).to.be.a('object');
       done();
     }, function(err) {
       expect(err).to.equal(null);
