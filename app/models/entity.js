@@ -10,7 +10,7 @@ var entitySchema = new Schema({
   date: { type: Date, default: Date.now },
   selector: String,
   value: String,
-  _webpage: { type: String, ref: 'Webpage' }
+  _webpage: { type: Schema.Types.ObjectId, ref: 'Webpage' }
 });
 
 var Entity = mongoose.model('Entity', entitySchema);

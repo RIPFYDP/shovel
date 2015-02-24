@@ -19,7 +19,7 @@ var webpageSchema = new Schema({
   date: { type: Date, default: Date.now },
   url: { type: String, required: true, validate: toValidate.url },
   body: { type: String, required: true },
-  entities: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Entity' }]
+  entities: [{ type: Schema.Types.ObjectId, ref: 'Entity' }]
 });
 
 var Webpage = mongoose.model('Webpage', webpageSchema);
@@ -132,6 +132,21 @@ Webpage.reget = function(condition) {
     deferred.resolve(webpage);
   }, function(err) {
     deferred.reject(err);
+  });
+
+  return deferred.promise;
+};
+
+Webpage.findAllPopulateQ = function() {
+  var deferred = Q.defer();
+
+  Webpage.find({})
+  .populate('entities')
+  .exec(function(err, result){
+    if(err) {
+      return deferred.reject(err);
+    }
+    deferred.resolve(result);
   });
 
   return deferred.promise;

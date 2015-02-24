@@ -127,14 +127,19 @@ gulp.task('db:test:seed', ['db:test:drop'], function() {
         db.createCollection('entities', {}, function(err, entitiesCollection) {
           assert.equal(null, err);
 
+          var temp = _.map(result, function(wp) {
+            return wp._id;
+          });
+
           _.each(entities, function(entity) {
             var randomInt = Random.integer(0, 100 - 1)(rEngine);
-            entity._webpage = result[randomInt]._id.toString();
+            entity._webpage = result[randomInt]._id;
           });
 
           entitiesCollection.insert(entities, function(err, resultEntities) {
             assert.equal(null, err);
-            deferred.resolve(result);
+            console.log(resultEntities);
+            deferred.resolve(resultEntities);
             db.close();
           });
         });
