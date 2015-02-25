@@ -138,7 +138,6 @@ gulp.task('db:test:seed', ['db:test:drop'], function() {
 
           entitiesCollection.insert(entities, function(err, resultEntities) {
             assert.equal(null, err);
-            console.log(resultEntities);
             deferred.resolve(resultEntities);
             db.close();
           });
