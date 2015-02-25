@@ -3,7 +3,6 @@ var Schema = mongoose.Schema;
 var Q = require('q');
 var cheerio = require('cheerio');
 var _ = require('lodash');
-var Webpage = require('./webpage');
 var Request = require('./request');
 
 var entitySchema = new Schema({
@@ -14,6 +13,9 @@ var entitySchema = new Schema({
 });
 
 var Entity = mongoose.model('Entity', entitySchema);
+module.exports = Entity;
+
+var Webpage = require('./webpage');
 
 Entity.findAllQ = function() {
   var deferred = Q.defer();
@@ -155,5 +157,3 @@ Entity.findOneAndUpdateWithValueQ = function(condition, data) {
 
   return deferred.promise;
 };
-
-module.exports = Entity;

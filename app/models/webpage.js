@@ -24,6 +24,9 @@ var webpageSchema = new Schema({
 webpageSchema.path('url').index({ unique: true });
 
 var Webpage = mongoose.model('Webpage', webpageSchema);
+module.exports = Webpage;
+
+var Entity = require('./entity');
 
 Webpage.findAllQ = function() {
   var deferred = Q.defer();
