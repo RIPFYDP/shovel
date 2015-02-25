@@ -1,6 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect;
 var Q = require('q');
+var _ = require('lodash');
 var app = require('../../../app');
 
 var Entity = require('../../../app/models/entity');
@@ -120,11 +121,16 @@ describe('entity model', function() {
     });
   });
 
+  // Insert an entity and get the value for its selector.
+  // Also populate entities attributes for the webpage.
   it('.insertOneAndGetValueQ', function(done) {
     var en = { selector: '#main' };
+    var wp;
+    var enCopy;
 
     Webpage.pickOneQ()
     .then(function(webpage) {
+      wp = webpage;
       en._webpage = webpage._id.toString();
       return Entity.insertOneAndGetValueQ(en);
     }, function(err) {
@@ -132,8 +138,20 @@ describe('entity model', function() {
       done();
     })
     .then(function(entity) {
+      enCopy = entity;
       expect(entity).to.be.a('object');
       expect(entity.selector).to.equal(en.selector);
+      return Webpage.findOneQ({ _id: wp._id.toString() });
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    })
+    .then(function(webpage) {
+      var entityIds = _.map(webpage.entities, function(entityId) {
+        return entityId.toString();
+      });
+
+      expect(_.includes(entityIds, enCopy._id.toString())).to.equal(true);
       done();
     }, function(err) {
       expect(err).to.equal(null);

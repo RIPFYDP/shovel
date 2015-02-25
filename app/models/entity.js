@@ -86,11 +86,16 @@ Entity.findOnePopulateQ = function(condition) {
   return deferred.promise;
 };
 
+// Insert an entity and get the value for a selector.
+// Populate entities atttribute of the webpage.
 Entity.insertOneAndGetValueQ = function(data) {
   var deferred = Q.defer();
+  var wp;
+  var en;
 
   Webpage.findOneQ({ _id: data._webpage })
   .then(function(webpage) {
+    wp = webpage;
     var $ = cheerio.load(webpage.body);
     data.value = $(data.selector).text();
     return Entity.insertOneQ(data);
@@ -98,7 +103,14 @@ Entity.insertOneAndGetValueQ = function(data) {
     deferred.reject(err);
   })
   .then(function(entity) {
-    deferred.resolve(entity);
+    en = entity;
+    wp.entities.push(entity);
+    return wp.saveQ();
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(webpage) {
+    deferred.resolve(en);
   }, function(err) {
     deferred.reject(err);
   });

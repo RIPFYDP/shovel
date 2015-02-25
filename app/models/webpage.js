@@ -156,4 +156,15 @@ Webpage.findAllPopulateQ = function() {
   return deferred.promise;
 };
 
-module.exports = Webpage;
+Webpage.prototype.saveQ = function() {
+  var deferred = Q.defer();
+
+  this.save(function(err, result) {
+    if (err) {
+      return deferred.reject(err);
+    }
+    deferred.resolve(result);
+  });
+
+  return deferred.promise;
+};

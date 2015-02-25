@@ -164,4 +164,25 @@ describe('webpage model', function() {
       done();
     });
   });
+
+  it('#saveQ', function(done) {
+    var wp = { url: 'http://app.rhapsody.com/', body: 'yes' };
+    var newUrl = 'http://app.rhapsody.com/members/jkim';
+
+    Webpage.insertOneQ(wp)
+    .then(function(webpage) {
+      webpage.url = newUrl;
+      return webpage.saveQ();
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    })
+    .then(function(webpage) {
+      expect(webpage.url).to.equal(newUrl);
+      done();
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    });
+  });
 });
