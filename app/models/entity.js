@@ -9,7 +9,7 @@ var entitySchema = new Schema({
   date: { type: Date, default: Date.now },
   selector: String,
   value: String,
-  _webpage: { type: Schema.Types.ObjectId, ref: 'Webpage' }
+  _webpage: { type: String, ref: 'Webpage' }
 });
 
 var Entity = mongoose.model('Entity', entitySchema);
@@ -105,6 +105,7 @@ Entity.insertOneAndGetValueQ = function(data) {
   .then(function(entity) {
     en = entity;
     wp.entities.push(entity);
+
     return wp.saveQ();
   }, function(err) {
     deferred.reject(err);
@@ -126,6 +127,42 @@ Entity.findOneAndRemoveQ = function(data) {
       return deferred.reject(err);
     }
     deferred.resolve(result);
+  });
+
+  return deferred.promise;
+};
+
+Entity.findOneAndRemoveDepopulateQ = function(data) {
+  var deferred = Q.defer();
+  var wp;
+  var en;
+
+  Entity.findOneQ(data)
+  .then(function(entity) {
+    en = entity;
+    return  Webpage.findOneQ({ _id: entity._webpage });
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(webpage) {
+    wp = webpage;
+    return Entity.findOneAndRemoveQ(data);
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(entity) {
+    wp.entities = _.reject(wp.entities, function(entityId) {
+      return entityId.toString() === entity._id.toString();
+    });
+
+    return wp.saveQ();
+  }, function(err) {
+    deferred.reject(err);
+  })
+  .then(function(webpage) {
+    deferred.resolve(en);
+  }, function(err) {
+    deferred.reject(err);
   });
 
   return deferred.promise;

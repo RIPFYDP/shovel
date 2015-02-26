@@ -75,7 +75,7 @@ var entitiesController = {
   destroy: function(req, res) {
     var id = req.body.entity_id;
 
-    Entity.findOneAndRemoveQ({_id: id})
+    Entity.findOneAndRemoveDepopulateQ({_id: id})
     .then(function(webpage) {
       req.flash('success', 'Deleted the entity');
       return res.redirect('/entities');

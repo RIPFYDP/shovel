@@ -159,11 +159,14 @@ describe('entity model', function() {
     });
   });
 
-  it('.findOneAndRemoveQ', function(done) {
+  it('.findOneAndRemoveDepopulateQ', function(done) {
     var en = { selector: '#main' };
+    var wp;
+    var enCopy;
 
     Webpage.pickOneQ()
     .then(function(webpage) {
+      wp = webpage;
       en._webpage = webpage._id.toString();
       return Entity.insertOneAndGetValueQ(en);
     }, function(err) {
@@ -171,13 +174,25 @@ describe('entity model', function() {
       done();
     })
     .then(function(entity) {
-      return Entity.findOneAndRemoveQ({ _id: entity._id.toString() });
+      return Entity.findOneAndRemoveDepopulateQ({ _id: entity._id.toString() });
     }, function(err) {
       expect(err).to.equal(null);
       done();
     })
     .then(function(entity) {
+      enCopy = entity;
       expect(entity).to.be.a('object');
+      return Webpage.findOneQ({ _id: wp._id.toString() });
+    }, function(err) {
+      expect(err).to.equal(null);
+      done();
+    })
+    .then(function(webpage) {
+      var entityIds = _.map(webpage.entities, function(entity) {
+        return entity._id.toString();
+      });
+
+      expect(_.includes(entityIds, enCopy._id.toString())).to.equal(false);
       done();
     }, function(err) {
       expect(err).to.equal(null);
