@@ -26,7 +26,7 @@
         {% for webpage in webpages %}
           <tr>
             <td>{{ { string: webpage.url, at: 50 }|truncate }}</td>
-            <td></td>
+            <td>{{ webpage.entities.length }}</td>
             <td>
               <p><a class="btn btn-default" href="/webpages/{{ webpage._id.toString() }}/edit">Edit</a></p>
               <p>

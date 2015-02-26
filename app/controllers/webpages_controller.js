@@ -5,7 +5,7 @@ var Webpage = require('../models/webpage');
 
 var webpagesController = {
   index: function(req, res, next) {
-    Webpage.findAllQ()
+    Webpage.findAllPopulateQ()
     .then(function(webpages) {
       res.render('webpages/index', { webpages: webpages });
     }, function(err) {
