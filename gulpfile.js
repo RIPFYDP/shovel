@@ -13,6 +13,7 @@ var assert = require('assert');
 var Q = require('q');
 var Random = require('random-js');
 var rEngine = Random.engines.nativeMath;
+var tasks = require('./tasks/tasks');
 
 var app = require('./app');
 
@@ -155,6 +156,10 @@ gulp.task('test-once', ['db:test:seed'], function() {
   return gulp.src('test/**/**/*.js', {read: false})
              .pipe(mocha({reporter: 'nyan'}))
              .pipe(exit());
+});
+
+gulp.task('seed', function() {
+  tasks.seed('development');
 });
 
 gulp.task('test-complete', ['db:test:drop', 'db:test:seed', 'test-once']);
