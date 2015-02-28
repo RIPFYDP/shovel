@@ -169,32 +169,22 @@ describe('entity model', function() {
       wp = webpage;
       en._webpage = webpage._id.toString();
       return Entity.insertOneAndGetValueQ(en);
-    }, function(err) {
-      expect(err).to.equal(null);
-      done();
     })
     .then(function(entity) {
       return Entity.findOneAndRemoveDepopulateQ({ _id: entity._id.toString() });
-    }, function(err) {
-      expect(err).to.equal(null);
-      done();
     })
     .then(function(entity) {
       enCopy = entity;
       expect(entity).to.be.a('object');
       return Webpage.findOneQ({ _id: wp._id.toString() });
-    }, function(err) {
-      expect(err).to.equal(null);
-      done();
     })
     .then(function(webpage) {
-      var entityIds = _.map(webpage.entities, function(entity) {
-        return entity._id.toString();
-      });
+      var entityIds = webpage.entities;
 
       expect(_.includes(entityIds, enCopy._id.toString())).to.equal(false);
       done();
-    }, function(err) {
+    })
+    .fail(function(err) {
       expect(err).to.equal(null);
       done();
     });

@@ -9,8 +9,6 @@ var Webpage = require('../app/models/webpage');
 var Entity = require('../app/models/entity');
 
 var taskHelpers = {
-  connection: {},
-
   mongooseConnect: function(env) {
     var deferred = Q.defer();
 
@@ -68,7 +66,7 @@ var taskHelpers = {
   },
 
   mongooseClose: function() {
-    return taskHelpers.connection.close();
+    return Q.fcall(mongoose.connection.close);
   }
 };
 

@@ -100,55 +100,15 @@ gulp.task('db:test:drop', function() {
 
 gulp.task('db:test:seed', ['db:test:drop'], function() {
   var deferred = Q.defer();
-  var webpages = [];
-  var entities = [];
 
-  _.times(100, function() {
-    webpages.push({
-      body: faker.lorem.paragraph(),
-      url: faker.internet.ip(),
-      date: faker.date.recent()
-    });
-
-    entities.push({
-      selector: '#main',
-      value: '<html></html>'
-    });
-  });
-
-  Mongo.connect(test.database.fullUrl, function(err, db) {
-    assert.equal(null, err);
-
-    db.createCollection('webpages', {}, function(err, collection) {
-      assert.equal(null, err);
-
-      collection.insert(webpages, function(err, result) {
-        assert.equal(null, err);
-
-        db.createCollection('entities', {}, function(err, entitiesCollection) {
-          assert.equal(null, err);
-
-          var temp = _.map(result, function(wp) {
-            return wp._id;
-          });
-
-          _.each(entities, function(entity) {
-            var randomInt = Random.integer(0, 100 - 1)(rEngine);
-            entity._webpage = result[randomInt]._id;
-          });
-
-          entitiesCollection.insert(entities, function(err, resultEntities) {
-            assert.equal(null, err);
-            deferred.resolve(resultEntities);
-            db.close();
-          });
-        });
-      })
-    });
-  });
+  tasks.seed('test')
+  .then(function(result) {
+    return deferred.resolve(result);
+  })
 
   return deferred.promise;
 });
+
 
 gulp.task('test-once', ['db:test:seed'], function() {
   process.env.NODE_ENV = 'test';
@@ -158,8 +118,16 @@ gulp.task('test-once', ['db:test:seed'], function() {
              .pipe(exit());
 });
 
-gulp.task('seed', function() {
-  tasks.seed('development');
+gulp.task('db:development:seed', function() {
+  var deferred = Q.defer();
+
+  tasks.seed('development')
+  .then(function(result) {
+    return deferred.resolve(result);
+  })
+
+  return deferred.promise;
 });
+
 
 gulp.task('test-complete', ['db:test:drop', 'db:test:seed', 'test-once']);
