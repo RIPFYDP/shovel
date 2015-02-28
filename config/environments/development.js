@@ -27,9 +27,9 @@ var development = {
     app.set('view engine', 'html');
     swigHelpers.setup(swig);
 
+    app.use(compass());
     app.use(express.static(path.join(__dirname, '../../public')));
     app.use('/bower_components',  express.static(__dirname + '/../../bower_components'));
-    app.use(compass());
 
     // uncomment after placing your favicon in /public
     // app.use(favicon(__dirname + '/public/favicon.ico'));
